@@ -67,20 +67,20 @@ export const useQuestions = (url) => {
     } else {
       // Jika ini pertanyaan terakhir, setel quizCompleted menjadi true
       setQuizCompleted(true);
-      newIndex = currentQuestionIndex; // Tidak perlu menambah indeks lagi
+      newIndex = currentQuestionIndex; 
     }
 
     setCurrentQuestionIndex(newIndex);
     
-    // Simpan status setelah menentukan jika quizCompleted sudah true
+    
     saveQuizState();
 
-    // Jika kuis sudah selesai, hapus state kuis dari localStorage
+  
     if (newIndex === questions.length - 1) {
       // Tunda penghapusan agar state kuis tersimpan dulu
       setTimeout(() => {
         localStorage.removeItem("quizState");
-      }, 1000); // Beri waktu untuk menyimpan terlebih dahulu
+      }, 1000); 
     }
   };
 

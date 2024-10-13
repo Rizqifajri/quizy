@@ -11,7 +11,7 @@ export const QuestionPage = () => {
   const [score, setScore] = useState(0);
   const [totalAnswered, setTotalAnswered] = useState(0);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [quizCompleted, setQuizCompleted] = useState(false); // New state for quiz completion
+  const [quizCompleted, setQuizCompleted] = useState(false); 
 
   const handleModalClose = () => {
     setIsModalOpen(false);
@@ -19,14 +19,14 @@ export const QuestionPage = () => {
 
   // Fungsi untuk menangani ketika waktu habis
   const handleTimeUp = () => {
-    setIsModalOpen(true); // Buka modal ketika waktu habis
-    setQuizCompleted(true); // Tandai kuis sebagai selesai
+    setIsModalOpen(true); 
+    setQuizCompleted(true); 
   };
 
   // Fungsi untuk menangani ketika kuis selesai (semua pertanyaan dijawab)
   const handleQuizCompletion = () => {
-    setIsModalOpen(true); // Buka modal ketika kuis selesai
-    setQuizCompleted(true); // Tandai kuis sebagai selesai
+    setIsModalOpen(true); 
+    setQuizCompleted(true); 
   };
 
   return (
@@ -38,11 +38,11 @@ export const QuestionPage = () => {
         <Timer expiryTimestamp={time} onTimeUp={handleTimeUp} quizCompleted={quizCompleted} />
       </div>
 
-      {/* Kirimkan fungsi setScore, setTotalAnswered, dan handleQuizCompletion */}
+      
       <QuizQuestion
         setScore={setScore}
         setTotalAnswered={setTotalAnswered}
-        onQuizComplete={handleQuizCompletion} // Tambahkan handler untuk kuis selesai
+        onQuizComplete={handleQuizCompletion} 
       />
 
       {isModalOpen && (

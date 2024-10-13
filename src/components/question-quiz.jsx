@@ -13,8 +13,8 @@ export const QuizQuestion = () => {
     error,
     currentQuestionIndex,
     handleAnswer,
-    quizCompleted, // Add quizCompleted to check if the quiz is finished
-    score, // Use score from hook
+    quizCompleted, 
+    score, 
   } = useQuestions("https://opentdb.com/api.php?amount=10", selectedCategory);
 
   if (loading) {
@@ -48,7 +48,7 @@ export const QuizQuestion = () => {
 
   const handleAnswerClick = (answer) => {
     const isCorrect = answer === currentQuestion.correct_answer; // Cek jawaban benar
-    handleAnswer(answer); // This already handles the answer inside the hook
+    handleAnswer(answer); 
 
     // Jika ini adalah pertanyaan terakhir
     if (currentQuestionIndex === questions.length - 1) {
@@ -80,7 +80,7 @@ export const QuizQuestion = () => {
       </Card>
       {quizCompleted && (
         <CompleteModal
-          score={score} // Use score from hook
+          score={score} 
           totalQuestions={questions.length}
           onClose={() => setIsComplete(false)}
         />

@@ -16,7 +16,7 @@ export function SelectCategory() {
   const [category, setCategory] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("");
 
-  // Fetch categories from the API when component mounts
+
   useEffect(() => {
     const fetchCategories = async () => {
       try {
@@ -24,12 +24,11 @@ export function SelectCategory() {
         const data = await response.json();
         setCategories(data.trivia_categories);
 
-        // Check if a category was previously selected and stored in localStorage
+
         const savedCategory = localStorage.getItem("selectedCategory");
         if (savedCategory) {
-          setSelectedCategory(savedCategory); // Load saved category if exists
+          setSelectedCategory(savedCategory); 
         } else {
-          // Set the default to the first category and save it to localStorage
           setSelectedCategory(data.trivia_categories[0].name);
           localStorage.setItem(
             "selectedCategory",
@@ -44,11 +43,11 @@ export function SelectCategory() {
     fetchCategories();
   }, []);
 
-  // Handle category selection
+  
   const handleCategoryChange = (value) => {
     setCategory(value);
     setSelectedCategory(value);
-    localStorage.setItem("selectedCategory", value); // Save selected category to localStorage
+    localStorage.setItem("selectedCategory", value); 
   };
 
   return (
