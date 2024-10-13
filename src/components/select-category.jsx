@@ -1,4 +1,5 @@
 import * as React from "react";
+import { useState, useEffect } from "react";
 
 import {
   Select,
@@ -11,12 +12,12 @@ import {
 } from "@/components/ui/select";
 
 export function SelectCategory() {
-  const [categories, setCategories] = React.useState([]);
-  const [category, setCategory] = React.useState("");
-  const [selectedCategory, setSelectedCategory] = React.useState("");
+  const [categories, setCategories] = useState([]);
+  const [category, setCategory] = useState("");
+  const [selectedCategory, setSelectedCategory] = useState("");
 
   // Fetch categories from the API when component mounts
-  React.useEffect(() => {
+  useEffect(() => {
     const fetchCategories = async () => {
       try {
         const response = await fetch("https://opentdb.com/api_category.php");
@@ -30,7 +31,10 @@ export function SelectCategory() {
         } else {
           // Set the default to the first category and save it to localStorage
           setSelectedCategory(data.trivia_categories[0].name);
-          localStorage.setItem("selectedCategory", data.trivia_categories[0].name);
+          localStorage.setItem(
+            "selectedCategory",
+            data.trivia_categories[0].name
+          );
         }
       } catch (err) {
         console.error(err);
@@ -49,8 +53,8 @@ export function SelectCategory() {
 
   return (
     <Select value={selectedCategory} onValueChange={handleCategoryChange}>
-      <SelectTrigger className="w-[180px]">
-        <SelectValue placeholder="Select Category" />
+      <SelectTrigger className='w-[180px]'>
+        <SelectValue placeholder='Select Category' />
       </SelectTrigger>
       <SelectContent>
         <SelectGroup>

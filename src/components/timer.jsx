@@ -2,12 +2,17 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/comp
 import { TimerIcon } from "lucide-react";
 import { useTimer } from "react-timer-hook";
 import { cn } from "@/lib/utils";
+import { useQuestions } from "@/hooks/useQuestions";
 
-export const Timer = ({ expiryTimestamp, onTimeUp }) => {
+export const Timer = ({ expiryTimestamp, onTimeUp, quizCompleted }) => {
   const { seconds, minutes, hours, isRunning } = useTimer({
     expiryTimestamp,
     onExpire: onTimeUp, 
   });
+
+  if(quizCompleted){
+    return ;
+  }
 
   return (
     <TooltipProvider>

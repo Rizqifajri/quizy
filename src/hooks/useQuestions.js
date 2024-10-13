@@ -1,40 +1,86 @@
 import { useState, useEffect } from "react";
 
-export const useQuestions = (url, category) => {
-  const [questions, setQuestions] = useState(null); 
-  const [loading, setLoading] = useState(true); 
-  const [error, setError] = useState(null); 
-  const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0); 
-  const [score, setScore] = useState(0); 
+export const useQuestions = (url) => {
+  const [questions, setQuestions] = useState(null);
+  const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
+  const [score, setScore] = useState(0);
+  const [totalAnswered, setTotalAnswered] = useState(0);
+  const [quizCompleted, setQuizCompleted] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
-    const fetchQuestions = async () => {
-      try {
-        const categoryParam = category ? `&category=${category}` : "";
-        const response = await fetch(`${url}${categoryParam}`);
-        const data = await response.json();
-        setQuestions(data.results);
-        setLoading(false);
-      } catch (err) {
-        setError(err.message);
-        setLoading(false);
-      }
-    };
+    const savedState = localStorage.getItem("quizState");
+    if (savedState) {
+      const { questions, currentQuestionIndex, score, totalAnswered, quizCompleted } = JSON.parse(savedState);
+      setQuestions(questions);
+      setCurrentQuestionIndex(currentQuestionIndex);
+      setScore(score);
+      setTotalAnswered(totalAnswered);
+      setQuizCompleted(quizCompleted);
+      setLoading(false);
+    } else {
+      fetchQuestions();
+    }
+  }, [url]);
 
-    fetchQuestions();
-  }, [url, category]);
+  const fetchQuestions = async () => {
+    try {
+      const response = await fetch(url);
+      const data = await response.json();
+      setQuestions(data.results);
+      setLoading(false);
+    } catch (err) {
+      setError(err.message);
+      setLoading(false);
+    }
+  };
+
+  const saveQuizState = () => {
+    if (questions) {
+      const quizState = {
+        questions,
+        currentQuestionIndex,
+        score,
+        totalAnswered,
+        quizCompleted,
+      };
+      localStorage.setItem("quizState", JSON.stringify(quizState));
+    }
+  };
 
   const handleAnswer = (selectedAnswer) => {
+    if (!questions) return;
+
     const correctAnswer = questions[currentQuestionIndex].correct_answer;
+
     if (selectedAnswer === correctAnswer) {
-      setScore(score + 1);
+      setScore((prevScore) => prevScore + 1);
     }
 
-  
+    const newTotalAnswered = totalAnswered + 1;
+    setTotalAnswered(newTotalAnswered);
+
+    let newIndex = currentQuestionIndex;
     if (currentQuestionIndex < questions.length - 1) {
-      setCurrentQuestionIndex(currentQuestionIndex + 1);
+      newIndex = currentQuestionIndex + 1;
     } else {
-      alert(`Quiz completed! Your score: ${score + 1}/${questions.length}`);
+      // Jika ini pertanyaan terakhir, setel quizCompleted menjadi true
+      setQuizCompleted(true);
+      newIndex = currentQuestionIndex; // Tidak perlu menambah indeks lagi
+    }
+
+    setCurrentQuestionIndex(newIndex);
+    
+    // Simpan status setelah menentukan jika quizCompleted sudah true
+    saveQuizState();
+
+    // Jika kuis sudah selesai, hapus state kuis dari localStorage
+    if (newIndex === questions.length - 1) {
+      // Tunda penghapusan agar state kuis tersimpan dulu
+      setTimeout(() => {
+        localStorage.removeItem("quizState");
+      }, 1000); // Beri waktu untuk menyimpan terlebih dahulu
     }
   };
 
@@ -44,6 +90,8 @@ export const useQuestions = (url, category) => {
     error,
     currentQuestionIndex,
     score,
+    quizCompleted,
+    totalAnswered,
     handleAnswer,
   };
 };

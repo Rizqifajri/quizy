@@ -94,8 +94,8 @@ export function UserLoginOrSignup({ ...props }) {
               </div>
             )}
           </div>
-          <CardFooter className=' flex flex-col w-full'>
-            <Button type='submit' className='w-full'>
+          <CardFooter className='flex flex-col w-full mt-5'>
+            <Button type='submit' className='bg-white text-black border hover:bg-black hover:text-white border-b-4 border-r-4 border-black w-full'>
               {isLogin ? "Login" : "Sign Up"}
             </Button>
           </CardFooter>
